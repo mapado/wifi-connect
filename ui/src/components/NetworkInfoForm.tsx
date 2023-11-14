@@ -1,7 +1,8 @@
 import { JSONSchema7 as JSONSchema } from 'json-schema';
 import * as React from 'react';
-import { Flex, Form, Heading, RenditionUiSchema } from 'rendition';
+import { Button, Flex, Form, Heading, RenditionUiSchema } from 'rendition';
 import { Network, NetworkInfo } from './App';
+import { RefreshIcon } from './RefreshIcon';
 import { T } from './Localize';
 
 const getSchema = (availableNetworks: Network[]): JSONSchema => ({
@@ -62,11 +63,13 @@ const isEnterpriseNetwork = (
 };
 
 interface NetworkInfoFormProps {
+	fetchNetworks: () => void;
 	availableNetworks: Network[];
 	onSubmit: (data: NetworkInfo) => void;
 }
 
 export const NetworkInfoForm = ({
+	fetchNetworks,
 	availableNetworks,
 	onSubmit,
 }: NetworkInfoFormProps) => {
@@ -86,7 +89,18 @@ export const NetworkInfoForm = ({
 			mt={5}
 		>
 			<Heading.h3 align="center" mb={4}>
-				{T('welcome_message')}
+				<Flex flexDirection={['column', 'row']} flexWrap="wrap">
+					{T('welcome_message')}
+					<Button
+						ml={[0, 3]}
+						tertiary
+						plain
+						icon={<RefreshIcon />}
+						onClick={fetchNetworks}
+					>
+						{T('rescan')}
+					</Button>
+				</Flex>
 			</Heading.h3>
 
 			<Form
